@@ -21,6 +21,7 @@ or mvn clean install
 
 ```
 
-Use [http://localhost:9090](http://localhost:9090) in your Postman or similar.
 
 Open  [http://localhost:9090/swagger-ui.html](http://localhost:9090/swagger-ui.html) in your browser to see the documentation with Swagger.
+
+
