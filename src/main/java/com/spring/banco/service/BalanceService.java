@@ -82,18 +82,24 @@ public class BalanceService {
         Map<String,Object> salida = new TreeMap<>();
         salida.put("Cliente",client);
         List<Balance> allAcount = balanceRepository.findByClient(client);
-        salida.put("Cuentas",allAcount);
+
         if(account!=null){
-            List<RespuestaItemHistorial> respuestaItemHistorials = collect.get(account);
-            collect.clear();
-            collect.put(account,respuestaItemHistorials);
-
+            allAcount=allAcount.stream().filter(c->c.getAccount().equalsIgnoreCase(account)).collect(Collectors.toList());
+            if(!allAcount.isEmpty())
+            {
+                List<RespuestaItemHistorial> respuestaItemHistorials = collect.get(account);
+                collect.clear();
+                collect.put(account,respuestaItemHistorials);
+            }
         }
-        if(collect.isEmpty()){
-            return ResponseEntity.ok(Respuesta.of("error","No hay datos"));
+        if(!allAcount.isEmpty())
+            salida.put("Cuentas",allAcount);
+
+        if(!collect.isEmpty()){
+            //return ResponseEntity.ok(Respuesta.of("error","No hay datos de transacciones"));
+            salida.put("Transacciones",collect);
         }
 
-        salida.put("Transacciones",collect);
         return ResponseEntity.ok(Respuesta.of("success",salida));
     }
 
